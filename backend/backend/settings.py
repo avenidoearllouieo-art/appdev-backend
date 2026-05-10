@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'rest_framework',
+    'rest_framework.authtoken',
     'lockers',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -48,7 +49,8 @@ INSTALLED_APPS = [
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "10.0.2.2"
+    "10.0.2.2",
+    "testserver",
 ]
 
 

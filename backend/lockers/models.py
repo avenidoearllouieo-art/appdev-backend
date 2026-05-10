@@ -1,33 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)  # Temporarily disabled
-    bio = models.TextField(max_length=500, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user.username}'s Profile"
-
-class ActivityLog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    action = models.CharField(max_length=100)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    ip_address = models.GenericIPAddressField(null=True, blank=True)
-    
-    def __str__(self):
-        return f"{self.user.username} - {self.action} at {self.timestamp}"
 
 class Locker(models.Model):
-    number = models.IntegerField()
-    status = models.CharField(max_length=20, default="Available")
-    time_left = models.IntegerField(default=0)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    """
+    Smart Locker Model - Lab 9 Requirements
+    
+    Locker object structure:
+    {
+      "id": 1,
+      "locker_number": 1,
+      "status": "Available",
+      "rented_by": null,
+      "rental_hours": 0,
+      "created_at": "2024-01-01T12:00:00Z"
+    }
+    """
+    STATUS_CHOICES = [
+        ('Available', 'Available'),
+        ('In Use', 'In Use'),
+    ]
+    
+    locker_number = models.IntegerField(unique=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Available')
+    rented_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    rental_hours = models.IntegerField(default=0)  # rental duration in hours
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['locker_number']
 
     def __str__(self):
-        return f"Locker {self.number} - {self.status}"
+        return f"Locker {self.locker_number} - {self.status}"
