@@ -10,6 +10,20 @@ from .models import Locker
 from .serializers import LockerSerializer, UserSerializer, RegisterSerializer, LoginSerializer
 
 
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def api_root(request):
+    return Response({
+        'message': 'Smart Locker API',
+        'endpoints': {
+            'register': '/api/register/',
+            'login': '/api/login/',
+            'lockers': '/api/lockers/',
+        }
+    })
+
+
 # ===========================
 # AUTHENTICATION ENDPOINTS
 # ===========================

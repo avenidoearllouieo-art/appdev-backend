@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # API root
+    path('', views.api_root, name='api_root'),
+
     # Authentication endpoints
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
